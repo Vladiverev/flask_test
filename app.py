@@ -7,7 +7,7 @@ import os
 app = Flask(__name__)
 login_manager = LoginManager()
 login_manager.init_app(app)
-login_manager.login_view = "users.login"
+login_manager.login_view = "login"
 app.config.from_object(os.environ['APP_SETTINGS'])
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
@@ -39,7 +39,7 @@ def home():
 
 
 @app.route('/welcome')
-# @login_required
+@login_required
 def welcome():
     return render_template('hello.html')
 
@@ -64,11 +64,11 @@ def login():
 
 
 @app.route('/logout')
-# @login_required
+@login_required
 def logout():
     logout_user()
     flash('You were logged out.')
-    return redirect(url_for('home'))
+    return redirect(url_for('welcome'))
 
 
 @app.route('/register/', methods=['GET', 'POST'])
